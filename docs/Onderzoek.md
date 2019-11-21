@@ -36,7 +36,7 @@ Om te kunnen communiceren met een database, is een persistence framework nodig. 
 
 Hiervoor is het Entity Framework ontwikkeld. Het Entity Framework is een open-source ORM framework voor .NET applicaties dat developers helpt met het communiceren met een database en ervoor zorgt dat alle bovenstaande acties niet zelf meer hoeven worden uitgevoerd. 
 
-<img src="./afbeeldingen/ef.png" alt="Entity Framework" width="250px"><br/>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/EF.PNG" alt="Entity Framework" width="250px"><br/>
 <em>Figuur 1: Entity Framework structuur</em>
 
 In bovenstaand figuur is te zien waar het Entity Framework pas in de structuur van de applicatie. Er kan gewerkt worden met data met gebruik van objecten of domein specifieke classes zonder te hoeven concentreren op de onderliggende database waar deze data staat opgeslagen. Hierdoor kan er op een hoger abstractieniveau omgegaan worden met deze data en is het mogelijk om applicaties te ontwikkelen met minder code en welke gemakkelijker te onderhouden zijn.
