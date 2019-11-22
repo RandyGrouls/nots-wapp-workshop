@@ -44,12 +44,12 @@ In bovenstaand figuur is te zien waar het Entity Framework pas in de structuur v
 ## Hoe werkt het Entity Framework?
 Het Entity Framework werkt doormiddel van het mappen van een class naar de database. Deze class heet een `Context class`, en wordt altijd afgeleid van `DbContext`. In deze context classes worden domein specifieke classes (Entities) gebruikt doormiddel van een generic genaamd `DbSet<TEntity>`
 
-<img src="./afbeeldingen/dbset-example.PNG" alt="DBset example" width="400px"><br/>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/dbset-example.PNG" alt="DBset example" width="400px"><br/>
 <em>Figuur 2: Voorbeeld DbSet</em>
 
 Om een entity te maken maak je eerst een class aan dat een databasetabel mapped. Als dit gedaan is, moet het eerst in een context class gezet worden doormiddel van de voorheen besproken `DbSet<TEntity>`. Wanneer deze context en entity classes aangemaakt zijn kunnen er queries geschreven worden. Deze queries worden geschreven met LINQ queries. Dit is de query taal die gebruikt wordt binnen .NET. 
 
-<img src="./afbeeldingen/linq-query.PNG" alt="Entity Framework"><br/>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/linq-query.PNG" alt="Entity Framework"><br/>
 <em>Figuur 3: Voorbeeld LINQ query</em>
 
 Het entity framework zal deze LINQ queries omzetten naar SQL queries, de database voert deze SQL queries uit en stuurt dan het resultaat terug. Het Entity Framework zet dit resultaat dan om naar Entity Objects.
@@ -77,21 +77,18 @@ Het Repository Pattern is een veel gebruikt pattern om duplicatie van data acces
 - Het maakt de applicatie beter testbaar.
 
 ## Hoe werkt het Repository Pattern? 
-Het repository pattern zorgt voor een extra laag abstractie over de data access laag, in ons geval houdt dat in dat wij met behulp van het repository pattern extra abstractie willen bij het maken van CRUD operaties.
-Om het repository pattern toe te passen moet er een Generic interface aangemaakt worden, binnen deze generic interface worden dan methoden aangemaakt die een generic meegeven. Hierna maak je een Generic class aan die extend naar onze Generic interface, binnen deze class worden dan alle CRUD operaties uitgevoerd.
+Het repository pattern zorgt voor een extra laag abstractie over de data access laag, in ons geval houdt dat in dat wij met behulp van het repository pattern extra abstractie willen bij het maken van CRUD operaties. 
 
+Om het repository pattern toe te passen is er een repository nodig, en dit interface is een interface voor een verzameling objecten in het geheugen. Vervolgens is er een klasse nodig dat dit interface implementeert dat een generic `DbContext` bevat. Deze kan vervolgens ook in andere applicaties gebruikt worden.
 
-<img src="./afbeeldingen/repository-diagram.PNG" alt="Entity Framework" width="500px"><br/>
-<em>Figuur 4: Voorbeeld repository methoden</em>
+In het geval van onze applicatie zal er voor elk entity een repository aangemaakt worden dat dit generic interface implementeert. Hier kunnen dan extra methoden worden toegevoegd die afhankelijk zijn van de toepassingscontext. Als laatste is er dan nog een klasse nodig die de functionaliteit van deze extra methoden bevat.
 
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/repository-diagram.PNG" alt="Entity Framework" width="500px"><br/>
+<em>Figuur 4: Voorbeeld repository implementatie</em>
 
-<!-- <img src="./afbeeldingen/repository-methods.PNG" alt="Entity Framework" width="200px"><br/>
-<em>Figuur 4: Voorbeeld repository methoden</em> -->
-
-Bovenstaand een voorbeeld van de methoden die een repository kan bevatten. Er is geen methode aanwezig om een object te updaten. Dit is namelijk een veelgemaakte fout. Als een object aangepast moet worden is het de bedoeling dat deze uit de collectie wordt gehaald met de `Get(id)` methode en vervolgens wordt aangepast. Nogmaals, een repository moet zich gedragen als een collectie van objecten. een `List` heeft geen methode om een object te updaten, daarom heeft een repository dit ook niet.
+Merk op dat er bovenstaand geen methode aanwezig is om een object te updaten. Dit is namelijk een veelgemaakte fout. Als een object aangepast moet worden is het de bedoeling dat deze uit de collectie wordt gehaald met de `Get(id)` methode en vervolgens wordt aangepast. Nogmaals, een repository moet zich gedragen als een collectie van objecten. een `List` heeft geen methode om een object te updaten, daarom heeft een repository dit ook niet.
 
 Om de wijzigingen aan deze collectie op te slaan in een database, wordt gebruik gemaakt van het Unit of Work Pattern. Een Unit of Work houdt een of meerdere soorten collecties bij van objecten waar CRUD operaties op zijn uitgevoerd. Een Unit of Work bevat een `Save()` methode dat verantwoordelijk is voor het opslaan van deze wijzigingen in een database.
-
 
 ## Hoe implementeer je het Repository Pattern?
 # Bronnen
