@@ -39,7 +39,7 @@ Hiervoor is het Entity Framework ontwikkeld. Het Entity Framework is een open-so
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/EF.PNG" alt="Entity Framework" width="250px"><br/>
 <em>Figuur 1: Entity Framework structuur</em>
 
-In bovenstaand figuur is te zien waar het Entity Framework pas in de structuur van de applicatie. Er kan gewerkt worden met data met gebruik van objecten of domein specifieke classes zonder te hoeven concentreren op de onderliggende database waar deze data staat opgeslagen. Hierdoor kan er op een hoger abstractieniveau omgegaan worden met deze data en is het mogelijk om applicaties te ontwikkelen met minder code en welke gemakkelijker te onderhouden zijn.
+In bovenstaand figuur is te zien waar het Entity Framework pas in de structuur van de applicatie. Er kan gewerkt worden met data met gebruik van objecten of domein specifieke classes zonder te hoeven focussen op de onderliggende database waar deze data staat opgeslagen. Hierdoor kan er op een hoger abstractieniveau omgegaan worden met deze data en is het mogelijk om applicaties te ontwikkelen met minder code en welke gemakkelijker te onderhouden zijn.
 
 ## Hoe werkt het Entity Framework?
 Het Entity Framework werkt doormiddel van het mappen van een class naar de database. Deze class heet een `Context class`, en wordt altijd afgeleid van `DbContext`. In deze context classes worden domein specifieke classes (Entities) gebruikt doormiddel van een generic genaamd `DbSet<TEntity>`
@@ -70,9 +70,13 @@ Deze drie worden samen gebruikt bij het uitvoeren van CRUD operaties op de datab
 
 # Repository Pattern
 ## Wat is het Repository Pattern?
+Het Repository Pattern is een veel gebruikt pattern om duplicatie van data access logica binnen een applicatie te voorkomen. Denk hierbij bijvoorbeeld aan het communiceren met een database. Het biedt een abstractie van gegevens zodat de applicatie kan werken met een interface dat de interface van een collection van entities benadert. Het uitvoeren van CRUD operaties op deze collection gebeurd dan via een aantal simpele methoden, zonder bezig te hoeven zijn met database gerelateerde taken zoals verbinding maken en queries verwerken. Onderstaand de voordelen van het Repository Pattern:
+- Het voorkomt het dupliceren van querylogica.
+- Het ontkoppelt de applicatie van persistence frameworks (zoals bijvoorbeeld [Entity Framework](#entity-framework)).
+- Het maakt de applicatie beter testbaar.
 
-## Hoe werkt het Repository Pattern?
-
+## Hoe werkt het Repository Pattern? 
+Zoals hiervoor al verteld is het Repository Pattern een erg populair pattern. Dit kan het gevolg hebben dat het vaak op de verkeerde manier gebruikt wordt. Kort zamengevat is dit hoe een repository er uit zou moeten zien. Deze moeten zich gedragen op dezelfde manier als een verzameling van objecten in het geheugen, zoals bijvoorbeeld een `List`. 
 ## Hoe implementeer je het Repository Pattern?
 # Bronnen
 ## Entity Framework
