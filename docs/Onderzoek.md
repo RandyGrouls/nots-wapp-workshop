@@ -44,12 +44,13 @@ In bovenstaand figuur is te zien waar het Entity Framework pas in de structuur v
 ## Hoe werkt het Entity Framework?
 Het Entity Framework werkt doormiddel van het mappen van een class naar de database. Deze class heet een `Context class`, en wordt altijd afgeleid van `DbContext`. In deze context classes worden domein specifieke classes (Entities) gebruikt doormiddel van een generic genaamd `DbSet<TEntity>`
 
-[INSERT DBSET IMAGE HERE].
-
+<img src="./afbeeldingen/dbset-example.PNG" alt="DBset example" width="400px"><br/>
+<em>Figuur 2: Voorbeeld DbSet</em>
 
 Om een entity te maken maak je eerst een class aan dat een databasetabel mapped. Als dit gedaan is, moet het eerst in een context class gezet worden doormiddel van de voorheen besproken `DbSet<TEntity>`. Wanneer deze context en entity classes aangemaakt zijn kunnen er queries geschreven worden. Deze queries worden geschreven met LINQ queries. Dit is de query taal die gebruikt wordt binnen .NET. 
 
-[INSERT LINQ QUERY HERE]
+<img src="./afbeeldingen/linq-query.PNG" alt="Entity Framework"><br/>
+<em>Figuur 3: Voorbeeld LINQ query</em>
 
 Het entity framework zal deze LINQ queries omzetten naar SQL queries, de database voert deze SQL queries uit en stuurt dan het resultaat terug. Het Entity Framework zet dit resultaat dan om naar Entity Objects.
 
@@ -76,7 +77,22 @@ Het Repository Pattern is een veel gebruikt pattern om duplicatie van data acces
 - Het maakt de applicatie beter testbaar.
 
 ## Hoe werkt het Repository Pattern? 
-Zoals hiervoor al verteld is het Repository Pattern een erg populair pattern. Dit kan het gevolg hebben dat het vaak op de verkeerde manier gebruikt wordt. Kort zamengevat is dit hoe een repository er uit zou moeten zien. Deze moeten zich gedragen op dezelfde manier als een verzameling van objecten in het geheugen, zoals bijvoorbeeld een `List`. 
+Het repository pattern zorgt voor een extra laag abstractie over de data access laag, in ons geval houdt dat in dat wij met behulp van het repository pattern extra abstractie willen bij het maken van CRUD operaties.
+Om het repository pattern toe te passen moet er een Generic interface aangemaakt worden, binnen deze generic interface worden dan methoden aangemaakt die een generic meegeven. Hierna maak je een Generic class aan die extend naar onze Generic interface, binnen deze class worden dan alle CRUD operaties uitgevoerd.
+
+
+<img src="./afbeeldingen/repository-diagram.PNG" alt="Entity Framework" width="500px"><br/>
+<em>Figuur 4: Voorbeeld repository methoden</em>
+
+
+<!-- <img src="./afbeeldingen/repository-methods.PNG" alt="Entity Framework" width="200px"><br/>
+<em>Figuur 4: Voorbeeld repository methoden</em> -->
+
+Bovenstaand een voorbeeld van de methoden die een repository kan bevatten. Er is geen methode aanwezig om een object te updaten. Dit is namelijk een veelgemaakte fout. Als een object aangepast moet worden is het de bedoeling dat deze uit de collectie wordt gehaald met de `Get(id)` methode en vervolgens wordt aangepast. Nogmaals, een repository moet zich gedragen als een collectie van objecten. een `List` heeft geen methode om een object te updaten, daarom heeft een repository dit ook niet.
+
+Om de wijzigingen aan deze collectie op te slaan in een database, wordt gebruik gemaakt van het Unit of Work Pattern. Een Unit of Work houdt een of meerdere soorten collecties bij van objecten waar CRUD operaties op zijn uitgevoerd. Een Unit of Work bevat een `Save()` methode dat verantwoordelijk is voor het opslaan van deze wijzigingen in een database.
+
+
 ## Hoe implementeer je het Repository Pattern?
 # Bronnen
 ## Entity Framework
@@ -89,4 +105,6 @@ https://www.youtube.com/watch?time_continue=1&v=rtXpYpZdOzM&feature=emb_logo
 
 https://www.infragistics.com/community/blogs/b/dhananjay_kumar/posts/how-to-implement-the-repository-pattern-in-asp-net-mvc-application
 
+https://dev.to/kylegalbraith/getting-familiar-with-the-awesome-repository-pattern--1ao3
 
+https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30
