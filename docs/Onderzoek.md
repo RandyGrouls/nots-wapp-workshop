@@ -68,6 +68,28 @@ EF bevat informatie over hoe het conceptual model mapped naar het databaseschema
 Deze drie worden samen gebruikt bij het uitvoeren van CRUD operaties op de database en het transformeren van de query resultaten naar Entity Objects.
 
 ## Hoe implementeer je het Entity Framework?
+In dit voorbeeld wordt er uitgegaan van een Database First implementatie. Bij een Database first implementatie van het Entity framework wordt er eerst een database aangemaakt met daarin een of meerdere tabellen. 
+
+<img src="./afbeeldingen/db-example.png" alt="db-example" width="200px"><br/>
+<em>Figuur 4: Voorbeeld database</em>
+
+Hierna kan er een applicatie aangemaakt worden. Wanneer deze applicatie is aangemaakt, moeten er een aantal packages geïnstalleerd worden. Ga naar `Tools > NuGet Package Manager > Manage NuGet Packages for Solution`. 
+
+<img src="./afbeeldingen/package-manager.png" alt="package-manager" width="400px"><br/>
+<em>Figuur 5: Package manager</em>
+
+
+zoek in de search bar naar `microsoft.entityframeworkcore` en selecteer het eerste resultaat. Zorg dat `Include prerelease` is aangevinkt. Kies dan het project in het rechterscherm en selecteer de juiste preview versie van de package, wanneer dit gedaan is klik dan op install. Herhaal dit proces voor `microsoft.entityframeworkcore.tools` en `microsoft.entityframeworkcore.sqlserver`. 
+
+<img src="./afbeeldingen/install-entity-framework.png" alt="install packages" width="500px"><br/>
+<em>Figuur 6: Installeren packages</em>
+
+Wanneer deze zijn geïnstalleerd ga dan naar `Tools > NuGet Package Manager > Package Manager Console`. In deze console wordt het volgende ingevoerd: `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME].` [SERVER_NAME] moet vervangen worden met de servernaam van de SQL Server, de [DIRECTORY_NAME] kan gewijzigd worden naar een map naar keuze.
+
+Als dit command klaar is met uitvoeren, zijn er nieuwe bestanden aangemaakt voor de entities en context class. Er wordt voor elke tabel een entity aangemaakt. In dit voorbeeld is gekozen voor de Models directory. Deze ziet er hierna zo uit:
+
+<img src="./afbeeldingen/scaffolded-models.png" alt="install packages" width="300px"><br/>
+<em>Figuur 7: Overzicht gegenereerde bestanden</em>
 
 # Repository Pattern
 ## Wat is het Repository Pattern?
@@ -84,7 +106,7 @@ Om het repository pattern toe te passen is er een repository nodig, en dit inter
 In het geval van onze applicatie zal er voor elk entity een repository aangemaakt worden dat dit generic interface implementeert. Hier kunnen dan extra methoden worden toegevoegd die afhankelijk zijn van de toepassingscontext. Als laatste is er dan nog een klasse nodig die de functionaliteit van deze extra methoden bevat.
 
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/repository-diagram.png" alt="Entity Framework" width="500px"><br/>
-<em>Figuur 4: Voorbeeld repository implementatie</em>
+<em>Figuur 8: Voorbeeld repository implementatie</em>
 
 Merk op dat er bovenstaand geen methode aanwezig is om een object te updaten. Dit is namelijk een veelgemaakte fout. Als een object aangepast moet worden is het de bedoeling dat deze uit de collectie wordt gehaald met de `Get(id)` methode en vervolgens wordt aangepast. Nogmaals, een repository moet zich gedragen als een collectie van objecten. een `List` heeft geen methode om een object te updaten, daarom heeft een repository dit ook niet.
 
@@ -96,6 +118,10 @@ Om de wijzigingen aan deze collectie op te slaan in een database, wordt gebruik 
 https://www.entityframeworktutorial.net/what-is-entityframework.aspx
 
 https://www.youtube.com/watch?time_continue=3&v=ZX7_12fwQLU&feature=emb_logo
+
+https://www.entityframeworktutorial.net/efcore/install-entity-framework-core.aspx
+
+https://www.entityframeworktutorial.net/efcore/create-model-for-existing-database-in-ef-core.aspx
 
 ## Repository Pattern
 https://www.youtube.com/watch?time_continue=1&v=rtXpYpZdOzM&feature=emb_logo
