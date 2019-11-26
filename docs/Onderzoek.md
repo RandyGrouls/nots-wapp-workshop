@@ -32,7 +32,7 @@ Het te onderzoeken onderwerp betreft Performance is ***Entity Framework/Reposito
 
 # Entity Framework
 ## Wat is het Entity Framework?
-Om te kunnen communiceren met een database, is een persistence framework nodig. Hiermee kun je CRUD operaties uitvoeren op een database. Het is mogelijk om dit zelf te schrijven met [ADO.NET](https://nl.wikipedia.org/wiki/ADO.NET) classes zoals `SqlConnection`, `SqlCommand` en `SqlDataReader`. Maar dit kost erg veel tijd omdat je dan zelf deze data in de database moet inlezen en omzetten naar bruikbare objecten.
+Om te kunnen communiceren met een database, is een persistence framework nodig. Met een persistence framework kunnen er CRUD operaties uitgevoerd worden op een database. Het is mogelijk om dit zelf te schrijven met [ADO.NET](https://nl.wikipedia.org/wiki/ADO.NET) classes zoals `SqlConnection`, `SqlCommand` en `SqlDataReader`. Maar dit kost erg veel tijd omdat je dan zelf deze data in de database moet inlezen en omzetten naar bruikbare objecten.
 
 Hiervoor is het Entity Framework ontwikkeld. Het Entity Framework is een open-source ORM framework voor .NET applicaties dat developers helpt met het communiceren met een database en ervoor zorgt dat alle bovenstaande acties niet zelf meer hoeven worden uitgevoerd. 
 
@@ -86,11 +86,41 @@ zoek in de search bar naar `microsoft.entityframeworkcore` en selecteer het eers
 
 Wanneer deze zijn geïnstalleerd ga dan naar `Tools > NuGet Package Manager > Package Manager Console`. In deze console wordt het volgende ingevoerd: `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME].` [SERVER_NAME] moet vervangen worden met de servernaam van de SQL Server, de [DIRECTORY_NAME] kan gewijzigd worden naar een map naar keuze.
 
-Als dit command klaar is met uitvoeren, zijn er nieuwe bestanden aangemaakt voor de entities en context class. Er wordt voor elke tabel een entity aangemaakt. In dit voorbeeld is gekozen voor de Models directory. Deze ziet er hierna zo uit:
+Als dit command klaar is met uitvoeren, zijn er nieuwe bestanden aangemaakt voor de entities en context class. Er wordt voor elke tabel een entity aangemaakt. In dit voorbeeld is gekozen voor de Root directory van het project hiervoor is `-OutputDir [DIRECTORY_NAME]` weggelaten. Deze ziet er hierna zo uit:
 
 <img src="./afbeeldingen/scaffolded-models.png" alt="install packages" width="300px"><br/>
 <em>Figuur 7: Overzicht gegenereerde bestanden</em>
 
+Daarna kun je met de gemaakte `DBContext` class CRUD operaties uitvoeren op de database. Deze class zal een één of meerdere `DBSets` bevatten afhankelijk van het aantal tabellen in de database. Omdat deze `DBSets` zich gedragen als een collectie, is het mogelijk om alle soorten LINQ queries te gebruiken om objecten te vinden.
+
+```c#
+DBFirstDemoContext context = new DBFirstDemoContext(); //Instantie van context aanmaken
+```
+```c#
+//Neighbourhood aanmaken
+var newNeighbourhood = new Neighbourhoods()
+{
+    Neighbourhood = "NewNeighbourhood"
+};
+context.Neighbourhoods.Add(newNeighbourhood); //Neighbourhood toevoegen
+context.SaveChanges(); //Wijzigingen opslaan
+```
+```c#
+var foundNeighbourhood = context.Neighbourhoods.Find(newNeighbourhood.NeighbourhoodId); //Neighbourhood vinden met primary key
+
+var foundNeighbourhoods = context.Neighbourhoods.Where(n => n.Neighbourhood.ToLower().Contains("a")); //Alle Neighbourhoods vinden met de letter a
+
+foundNeighbourhood.Neighbourhood = "UpdatedNeighbourhood"; //Properties aanpassen
+
+context.SaveChanges(); //Wijzigingen opslaan
+```
+```c#
+context.Neighbourhoods.Remove(foundNeighbourhood); //Bestaande Neighbourhood verwijderen
+
+context.Neighbourhoods.RemoveRange(foundNeighbourhoods); //Meerdere Neighbourhoods verwijderen
+
+context.SaveChanges(); //Wijzigingen opslaan
+```
 # Repository Pattern
 ## Wat is het Repository Pattern?
 Het Repository Pattern is een veel gebruikt pattern om duplicatie van data access logica binnen een applicatie te voorkomen. Denk hierbij bijvoorbeeld aan het communiceren met een database. Het biedt een abstractie van gegevens zodat de applicatie kan werken met een interface dat de interface van een collection van entities benadert. Het uitvoeren van CRUD operaties op deze collection gebeurd dan via een aantal simpele methoden, zonder bezig te hoeven zijn met database gerelateerde taken zoals verbinding maken en queries verwerken. Onderstaand de voordelen van het Repository Pattern:
@@ -101,11 +131,11 @@ Het Repository Pattern is een veel gebruikt pattern om duplicatie van data acces
 ## Hoe werkt het Repository Pattern? 
 Het repository pattern zorgt voor een extra laag abstractie over de data access laag, in ons geval houdt dat in dat wij met behulp van het repository pattern extra abstractie willen bij het maken van CRUD operaties. 
 
-Om het repository pattern toe te passen is er een repository nodig, en dit interface is een interface voor een verzameling objecten in het geheugen. Vervolgens is er een klasse nodig dat dit interface implementeert dat een generic `DbContext` bevat. Deze kan vervolgens ook in andere applicaties gebruikt worden.
+Om het repository pattern toe te passen is er een repository nodig, een repository is een interface voor een verzameling objecten in het geheugen. Vervolgens is er een klasse nodig dat dit interface implementeert dat een generic `DbContext` bevat. Deze kan vervolgens ook in andere applicaties gebruikt worden.
 
 In het geval van onze applicatie zal er voor elk entity een repository aangemaakt worden dat dit generic interface implementeert. Hier kunnen dan extra methoden worden toegevoegd die afhankelijk zijn van de toepassingscontext. Als laatste is er dan nog een klasse nodig die de functionaliteit van deze extra methoden bevat.
 
-<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/repository-diagram.png" alt="Entity Framework" width="500px"><br/>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/repository-diagram.png" alt="Repository Diagram" width="500px"><br/>
 <em>Figuur 8: Voorbeeld repository implementatie</em>
 
 Merk op dat er bovenstaand geen methode aanwezig is om een object te updaten. Dit is namelijk een veelgemaakte fout. Als een object aangepast moet worden is het de bedoeling dat deze uit de collectie wordt gehaald met de `Get(id)` methode en vervolgens wordt aangepast. Nogmaals, een repository moet zich gedragen als een collectie van objecten. een `List` heeft geen methode om een object te updaten, daarom heeft een repository dit ook niet.
@@ -113,6 +143,16 @@ Merk op dat er bovenstaand geen methode aanwezig is om een object te updaten. Di
 Om de wijzigingen aan deze collectie op te slaan in een database, wordt gebruik gemaakt van het Unit of Work Pattern. Een Unit of Work houdt een of meerdere soorten collecties bij van objecten waar CRUD operaties op zijn uitgevoerd. Een Unit of Work bevat een `Save()` methode dat verantwoordelijk is voor het opslaan van deze wijzigingen in een database.
 
 ## Hoe implementeer je het Repository Pattern?
+Om het Repository pattern te implementeren begin je met het aanmaken van een Entity framework applicatie zoals beschreven in het [Entity framework hoofdstuk](hoe-implementeer-je-het-entity-framework).
+
+<!-- Wanneer deze applicatie is aangemaakt moet er een Repository aangemaakt worden, dit wordt gedaan door een map genaamd Repositories aan te maken en daarin een generic interface in te zetten waarbij T verwijst naar een entity.
+Vervolgens worden hier SELECT, INSERT en DELETE operaties in aangemaakt zoals hieronder staat afgebeeld. De UPDATE en SAVE moeten buiten de repository aangemaakt worden. -->
+
+Wanneer deze applicatie is aangemaakt moeten er een aantal classes en interfaces aangemaakt worden. In onderstaand voorbeeld worden deze in de map "Repositories" geplaatst.
+
+<img src="./afbeeldingen/repository-classes.png" alt="Repository Diagram" width="300px"><br/>
+<em>Figuur 9: Overzicht Repository bestanden</em>
+
 # Bronnen
 ## Entity Framework
 https://www.entityframeworktutorial.net/what-is-entityframework.aspx
