@@ -5,62 +5,66 @@ In deze workshop gaan wij het Entity Framework implementeren samen met een datab
 ## Database Setup
 
 Begin met het openen van `Microsoft SQL Server Management Studio` en log in via `SQL Server Authentication`en importeer `DBFirstDemo.bacpac`.
-[image]
-Zoals je kan zien staat in deze database 3 tabellen, een genaamd `listings`, een genaamd `neighbourhoods` en een genaamd `reviews`.
-[image]
 
-We gaan nu bekijken hoeveel Neighourhoods wij hebben. Klik met de rechtermuisknop op de Neighbourhoods tabel en `Select Top 1000`, zoals je kan zien staan er 22 Neighbourhoods in.
+Zoals je kan zien staat in deze database 3 tabellen, een genaamd `listings`, een genaamd `neighbourhoods` en een genaamd `reviews`. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/db-example.png">
+
+We gaan nu bekijken hoeveel Neighourhoods wij hebben. Klik met de rechtermuisknop op de Neighbourhoods tabel en `Select Top 1000`, zoals je kan zien staan hier 22 Neighbourhoods in.
 
 ## Project Setup
 
-Om te beginnen open `Visual Studio Preview`, kies dan `Create a new project`. 
-[image]
-Maak dan een `C# .NET Core Console app` aan en noem de app EntityWorkshop. 
-[image]
+Om te beginnen open `Visual Studio Preview`, kies dan `Create a new project`. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewProject.png">
+
+Maak dan een `C# .NET Core Console app` aan en noem de app EntityWorkshop. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateConsoleApp.png">
+
 Ga naar `Tools > NuGet Package Manager > Manage NuGet Packages for Solution` en ga naar `Browse` en type in de searchbar `microsoft.entityframeworkcore` en zorg ervoor dat `Include prerelease` aangevinkt is.
-[image]
-Selecteer het eerste resultaat vink dan `EntityWorkshop` aan, zorg er ook voor dat de versie op `Latest prerelease` staat, wanneer dit gedaan is klik op install en accepteer de prompts.
-[image]
+
+Selecteer het eerste resultaat vink dan `EntityWorkshop` aan, zorg er ook voor dat de versie op `Latest prerelease` staat, wanneer dit gedaan is klik op install en accepteer de prompts. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/install-entity-framework.png">
+
 Herhaal vervolgens dit process met `microsoft.entityframeworkcore.tools` en `microsoft.entityframeworkcore.sqlserver`.
 
 ## Project Packages
 
 Ga naar `Tools > NuGet Package Manager > Package Manager Console`, voer hier vervolgens `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;` vervang `[SERVER_NAME]` met de naam van jouw database servernaam, in dit geval waarschijnlijk `localhost`.
-Plak hierna het volgende achter het eerste commando: `Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME]` hierbij verplaats je `[DIRECTORY_NAME]` met een naam naar keuze, wij gebruiken in ons geval de root directory en laten `-OutputDir [DIRECTORY_NAME]` weg uit het commando.
-[image]
+Plak hierna het volgende achter het eerste commando: `Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME]` hierbij verplaats je `[DIRECTORY_NAME]` met een naam naar keuze, wij gebruiken in ons geval de root directory en laten `-OutputDir [DIRECTORY_NAME]` weg uit het commando. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ConsolePackages.png">
+
 Wanneer dit is uitgevoerd zijn er een aantal bestanden gegenereert voor ons, deze files zijn onze gemapte database tabellen.
 
 ## Praten met de database
 
 Om queries te kunnen schrijven naar de database moeten wij nog enkele stappen zetten, deze stappen bevinden zich binnen de `Context class`, in ons geval heet deze `DBFirstDemoContext.cs`.
-Open dit bestand, zoals je kan zien bevat dit bestand 3 `DBSet<TEntity>'s`. Deze DBSet's zorgen ervoor dat onze maps entities worden en gedragen zich als een collectie, dit maakt het mogelijk om LINQ queries uit te voeren, wij gaan er ook een paar implementeren.
-[image]
+Open dit bestand, zoals je kan zien bevat dit bestand 3 `DBSet<TEntity>'s`. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/DBSet.png">
 
+Deze DBSet's zorgen ervoor dat onze maps entities worden en gedragen zich als een collectie, dit maakt het mogelijk om LINQ queries uit te voeren, wij gaan er ook een paar implementeren.
 
 Ga naar `Program.cs` en binnen de Main voer het volgende in:
 
-We beginnen eerst met het maken van een nieuwe context class instantie.
-[image]
-Hierna maken we een neighbourhood aan met de naam NewNeighbourhood en voegen deze toen via onze context class aan de Neigbourhoods map, hierna slaan wij de wijzigingen op.
-[image]
+We beginnen eerst met het maken van een nieuwe context class instantie. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewContext.png">
+
+Hierna maken we een neighbourhood aan met de naam NewNeighbourhood en voegen deze toen via onze context class aan de Neigbourhoods map, hierna slaan wij de wijzigingen op. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewNeighbourhood.png">
 
 Nu gaan wij enkele CRUD operaties uitvoeren doormiddel van LINQ.
-We beginnen met het maken van een SELECT query, in LINQ is dit een `Find`. Zoals je kan zien in de afbeelding hieronder wordt er gekeken in de context.Neigbourhood naar het NeigbourhoodId, deze wordt vervolgens in de variabel gezet en kan later gebruikt worden om het resultaat in dit geval in de console te gebruiken.
-[image]
+We beginnen met het maken van een SELECT query, in LINQ is dit een `Find`. Zoals je kan zien in de afbeelding hieronder wordt er gekeken in de context.Neigbourhood naar het NeigbourhoodId, deze wordt vervolgens in de variabel gezet en kan later gebruikt worden om het resultaat in dit geval in de console te gebruiken. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/Find.png">
 
-Nu dat wij een `Find` hebben uitgevoerd willen wij een SELECT uitvoeren maar meerdere resultaten ophalen in een query. Dit gaat doormiddel van `Where`, in dit voorbeeld zoeken wij naar alle Neighbourhoods die de letter "a" bevatten.
-[image]
+Nu dat wij een `Find` hebben uitgevoerd willen wij een SELECT uitvoeren maar meerdere resultaten ophalen in een query. Dit gaat doormiddel van `Where`, in dit voorbeeld zoeken wij naar alle Neighbourhoods die de letter "a" bevatten. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/Where.png">
 
 Nu pakken wij de Neighbourhood die wij met de eerste LINQ query hebben opgehaald en veranderen de naam van de Neighbourhood.
-[image]
+En omdat wij een aanpassing maken moeten wij deze weer opslaan. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ChangeName.png">
 
-En omdat wij een aanpassing maken moeten wij deze weer opslaan.
-[image]
-
-Als afsluiting gaan wij deze Neighbourhoods ook weer verwijderen. Om een enkele te verwijderen gebruik je `Remove` en voor meerdere gebruik je `RemoveRange`, deze voeren wij weer uit via de context en geven de variabelen mee die wij eerder hebben opgehaald via de `Find` en `Where` queries, en natuurlijk omdat we aanpassingen maken moeten we weer een `SaveChanges` doen.
-[image]
+Als afsluiting gaan wij deze Neighbourhoods ook weer verwijderen. Om een enkele te verwijderen gebruik je `Remove` en voor meerdere gebruik je `RemoveRange`, deze voeren wij weer uit via de context en geven de variabelen mee die wij eerder hebben opgehaald via de `Find` en `Where` queries, en natuurlijk omdat we aanpassingen maken moeten we weer een `SaveChanges` doen. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/Remove.png">
 
 Ga nu terug naar de database en klik met de rechtermuisknop op de Neighbourhoods tabel en `Select Top 1000`, zoals je kan zien staan er nu nog maar 13 Neighbourhoods in.
 
-Als je wilt dat het process van de queries getoond wordt kan je via Console.WriteLine() de query resultaat variabelen erin zetten.
+Als je wilt dat het process van de queries getoond wordt kan je via Console.WriteLine() de query resultaat variabelen erin zetten. </br>
 [image]

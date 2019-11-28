@@ -321,8 +321,14 @@ using (UnitOfWork unitOfWork = new UnitOfWork(new DBFirstDemoContext()))
     unitOfWork.Complete(); //Wijzigingen opslaan
 }
 ```
+# Sensitive Data Exposure
 
-# Bronnen
+## Wat is het?
+## Hoe werkt het?
+## Hoe merk je het?
+## Hoe voorkom je het?
+## Hoe implementeer je het?
+
 ## Entity Framework
 https://www.entityframeworktutorial.net/what-is-entityframework.aspx
 
@@ -340,3 +346,5 @@ https://www.infragistics.com/community/blogs/b/dhananjay_kumar/posts/how-to-impl
 https://dev.to/kylegalbraith/getting-familiar-with-the-awesome-repository-pattern--1ao3
 
 https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30
+
+## Sensitive Data Exposure
