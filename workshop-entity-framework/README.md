@@ -9,6 +9,8 @@ Begin met het openen van `Microsoft SQL Server Management Studio` en log in via 
 Zoals je kan zien staat in deze database 3 tabellen, een genaamd `listings`, een genaamd `neighbourhoods` en een genaamd `reviews`.
 [image]
 
+We gaan nu bekijken hoeveel Neighourhoods wij hebben. Klik met de rechtermuisknop op de Neighbourhoods tabel en `Select Top 1000`, zoals je kan zien staan er 22 Neighbourhoods in.
+
 ## Project Setup
 
 Om te beginnen open `Visual Studio Preview`, kies dan `Create a new project`. 
@@ -56,4 +58,9 @@ En omdat wij een aanpassing maken moeten wij deze weer opslaan.
 [image]
 
 Als afsluiting gaan wij deze Neighbourhoods ook weer verwijderen. Om een enkele te verwijderen gebruik je `Remove` en voor meerdere gebruik je `RemoveRange`, deze voeren wij weer uit via de context en geven de variabelen mee die wij eerder hebben opgehaald via de `Find` en `Where` queries, en natuurlijk omdat we aanpassingen maken moeten we weer een `SaveChanges` doen.
+[image]
+
+Ga nu terug naar de database en klik met de rechtermuisknop op de Neighbourhoods tabel en `Select Top 1000`, zoals je kan zien staan er nu nog maar 13 Neighbourhoods in.
+
+Als je wilt dat het process van de queries getoond wordt kan je via Console.WriteLine() de query resultaat variabelen erin zetten.
 [image]
