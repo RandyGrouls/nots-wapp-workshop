@@ -324,10 +324,76 @@ using (UnitOfWork unitOfWork = new UnitOfWork(new DBFirstDemoContext()))
 # Sensitive Data Exposure
 
 ## Wat is het?
+Sensitive Data Exposure is één van de meest voorkomende beveiligingskwetsbaarheid met de meeste impact.   De meest voorkomende fout is dat de data in plaintext tussen systemen uitgewisseld worden, meestal in een onveilige verbinding. Dit is een probleem, omdat onbevoegden toegang kunnen krijgen tot gevoelige persoonlijke data. Dit probleem kan opgelost worden met behulp van cryptografie. 
+
+Cryptografie zorgt ervoor dat gegevens overdraagbaar zijn, die niet leesbaar zijn door onbevoegden. Dat gebeurt met een encryptie en decryptie. Een encryptie is het proces dat een plaintext data vertaalt naar een code, zonder dat er een betekenis heeft, dit noemt men een ciphertext. Om de ciphertext weer te converteren naar een plaintext wordt dit een decryptie genoemd. 
+
+Ondanks dat er cryptografie toegepast worden, komt het voor dat er gebruik wordt gemaakt van zwakke algoritmes, protocollen, codering en sleutelgeneratie en -beheer. Daarom is het van belang dat de juiste techniek gepast worden, die afhankelijk is van de noodzaak van de data. 
+
 ## Hoe werkt het?
+Moderne cryptografieën zijn (nagenoegen) onmogelijk om te kraken, omdat het soms jaren kunnen duren om één geëncrypte informatie te kraken. Dat is voor criminelen niet aantrekkelijk. Daarom gaan zij voor sleutels, omdat de opslag ervan minder goed beveiligd is. De hackers kunnen diverse aanvallen uitvoeren, zonder de cryptografie te kraken:
+
+### Man-in-the-middle-aanval
+Man-in-the-middle-aanval is een aanval waarbij de communicatie tussen twee partijen onderschept worden, zonder dat zij ervan weten. Daarbij kunnen berichten gelezen en gewijzigd worden. Daarom is het van belang om een goede encryptie te gebruiken.  
+
+###SQL-injectie
+SQL-injectie is een aanval, waarbij in een gebruikersinput SQL-statements wordt ingevoerd, die onbewust in de database wordt gerund. Het is vooral populair om deze aanval bij inlogpagina’s uit te voeren.  
+Het gevaar van deze aanvallen is dat alle gevoelige persoonlijke gegevens toegankelijk zijn voor onbevoegden, terwijl die beschermd hadden moeten zijn, zoals gezondheidsdossiers, inloggegevens, persoonlijke gegevens en creditcards. De bescherming van deze gegevens staan gedefinieerd door wetten, zoals EU’s GDPR en landelijke privacywetten.
+
 ## Hoe merk je het?
+Een applicatie kan last hebben van Sensitive Data Exposure. Hiervoor zijn er een aantal mogelijkheden:
+### Gevoelige data plaintext in database
+Gevoelige persoonlijke informatie wordt opgeslagen in een database, zonder dat er gebruik wordt gemaakt van encryptie. Het is van belang om gevoelige data te encrypten. Als criminelen op een onbevoegde wijze toegang hebben tot de database, dan kunnen zij niets doen met de database, aangezien de data onleesbaar is voor hen. Zij moeten óf toevallig in bezit zijn van de sleutels óf bij iedere data een brute-force uitvoeren. Met een goede encryptie kan dit jaren duren. 
+### Penetratietest
+Een penetratietest is een manier om een applicatie op kwetsbaarheden te toetsen, waarbij kwetsbaarheden daadwerkelijk uitgevoerd worden om in de applicatie in te breken.   Hierbij is het mogelijk om een betere beeld te krijgen van de beveiligingsrisico’s van de applicatie. Na zo’n test wordt er aanbevelingen voor het verhelpen van de ontdekte kwetsbaarheden. 
+
 ## Hoe voorkom je het?
+
+Het kan voorkomen worden door de code van de applicatie te reviewen en correct toepassen van veilige cryptografische algoritmen, veilige opslag van geheime sleutels, transportbeveiliging en identificeren van ontbrekende cryptografische bescherming. Hieronder staan een aantal specifieke maatregelen:
+-	Het versleutelen van data tijdens transport met behulp van veilige protocollen.
+-	Het onbruikbaar maken van caching bij een response, die gevoelige informatie bevatten. 
+-	Het opslaan van wachtwoorden met behulp van sterke, adaptieve en salted hashfuncties. 
+-	Het gebruikmaken van key management om ervoor te zorgen dat standaard algoritmes, protocollen en sleutels op z’n plaats zijn en up-to-date.
+-	Het onafhankelijk valideren van de effectiviteit van configuratie en instellingen. 
+
+Voor dit onderzoek wordt de focus gelegd op de cryptografie. Cryptografie bestaat uit hashfuncties, symmetrische en asymmetrische cryptografie. 
+
+### Hashfuncties
+Een hashfunctie is een toepassing om een plaintext van verschillende omvang om te zetten naar onleesbare code met dezelfde omvang.   Het is erg handig om gevoelige persoonlijke informatie te pseudonimiseren, zoals BSN, wachtwoorden, telefoonnummers en e-mailadressen. Een hashwaarde kan niet geraden worden, behalve door verschillende invoergegevens te proberen, net zolang totdat de gezochte hashwaarde tegen gekomen is. Dat maakt voor telefoonnummers en e-mailadressen minder uit. Voor wachtwoorden kan dit een nadeel zijn, omdat sommige mensen dezelfde wachtwoorden kunnen gebruiken. Daarom is het verstandig om extra data toe te voegen aan een hashfunctie, dit wordt ook wel salting genoemd. Een voorbeeld kan zijn om gebruikersnaam bij het wachtwoord van een gebruiker te hashen. 
+
+### Symmetrische cryptografie
+Een symmetrische cryptografie is een vorm van encryptie, waarbij er één sleutel wordt gebruikt om informatie te encrypten en decrypten.   Dat betekent dat de sleutel gebruikt wordt zowel de verzender als de ontvanger, ook wel shared secret genoemd. Het is veel sneller en vereist minder rekenkracht voor het encrypten en decrypten van informatie, zelfs als de lengte van een sleutel toeneemt. Aan de andere kant kent symmetrische cryptografie ook nadelen. Het voornaamste nadeel is het uitwisselen van een gezamenlijke sleutel onder gebruikers om informatie te encrypten en decrypten. Vooral bij de uitwisseling van een gezamenlijke sleutel over een onveilige connectie is de kans aanwezig dat de sleutel onderschept wordt door onbevoegde partijen. Daarnaast vormt dit een beveiligingsrisico als iedereen de sleutel krijgt om toegang tot bepaalde informatie te verschaffen. 
+
+### Asymmetrische cryptografie
+Een asymmetrische cryptografie is een vorm van encryptie, waarbij er twee sleutels gebruikt worden: één sleutel om te encrypten en een andere sleutel om te decrypten.  Deze sleutels noemt men public en private key. Het verschil is dat een public key toegankelijk voor iedereen is, maar een private key is geheim. Er zijn minder sleutels nodig ten opzichte van symmetrische cryptografie bij een grote groep. Daarbij is het een betrouwbare vorm van encryptie, ondanks dat er een grote groep is. Dat heeft te maken dat er een digitale handtekening wordt gezet, voordat een bericht wordt gelezen. Dit zorgt ervoor dat de actie niet ontkend kan worden. Asymmetrische cryptografie kent ook een aantal nadelen. Bij het verlies van private sleutels kan het nagenoegen niet meer hersteld worden en dan moeten alle public en private sleutels vervangen worden. Als de private sleutels in de verkeerde handen komen, dan kunnen zij dezelfde handelingen uitvoeren die de eigenaar ook kan.
+
 ## Hoe implementeer je het?
+Voor .NET Core heeft Microsoft een standaard library System.Security.Cryptography ontwikkeld, waarin alle algoritmes van cryptografie geïmplementeerd zijn. Dus wordt er een workshop gehouden over het implementeren van één van de beschikbare cryptografieën. In dit geval wordt er hashing toegepast bij meerdere wachtwoorden en hoe het mogelijk is om het kraken van hashing te minimaliseren.
+Implementatie van hashing
+1.	Maak een nieuwe ConsoleApp aan binnen de Visual Studio Preview.
+2.	Voeg een statische methode HashPassword(string password) binnen de klasse Program.
+```c#
+private static string HashPassword(string password)
+{
+    using var sha256 = SHA256.Create();
+    var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+    return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+}
+```
+3.	Voeg een string array toe van de top 10 meest gebruikte wachtwoorden in de Main-methode en maak van twee wachtwoorden duplicaten. In totaal zijn er 12 wachtwoorden, waarvan 10 wachtwoorden uniek zijn. 
+4.	Maak een for-loop van de string array van wachtwoorden in combinatie met de gehashte wachtwoorden en print deze in de console. Wat valt je op? 
+5.	Gehashte wachtwoorden kunnen achterhaald worden door een bruteforce uit te voeren met een lijst van alle mogelijke wachtwoorden. In dit geval wordt er gebruik gemaakt van een online password hash cracker. Kopieer één van de gehashte wachtwoorden in de volgende website: https://crackstation.net/.
+6.	Voeg een statische methode GenerateRandomSalt() binnen de klasse Program.
+```c#
+private static string GenerateRandomSalt()
+{
+    byte[] bytes = new byte[128 / 8];
+    using var keyGenerator = RandomNumberGenerator.Create();
+    keyGenerator.GetBytes(bytes);
+    return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+}
+```
+7.	Voeg bij de for-loop van wachtwoorden een salt toe bij de hashing van iedere wachtwoord. 
 
 ## Entity Framework
 https://www.entityframeworktutorial.net/what-is-entityframework.aspx
@@ -348,3 +414,18 @@ https://dev.to/kylegalbraith/getting-familiar-with-the-awesome-repository-patter
 https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30
 
 ## Sensitive Data Exposure
+https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure
+
+https://us.norton.com/internetsecurity-wifi-what-is-a-man-in-the-middle-attack.html
+
+https://portswigger.net/web-security/sql-injection
+
+https://www.fox-it.com/nl/diensten/testing/penetration-testing/
+
+https://allesovercrypto.nl/blog/hash-simpele-uitleg
+
+https://docs.microsoft.com/en-us/dotnet/standard/security/generating-keys-for-encryption-and-decryption
+
+https://greengarageblog.org/8-pros-and-cons-of-asymmetric-encryption
+
+
