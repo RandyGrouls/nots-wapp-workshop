@@ -396,36 +396,34 @@ private static string GenerateRandomSalt()
 7.	Voeg bij de for-loop van wachtwoorden een salt toe bij de hashing van iedere wachtwoord. 
 
 ## Entity Framework
-https://www.entityframeworktutorial.net/what-is-entityframework.aspx
+Entityframeworktutorial. (z.d.-a). Entity Framework Core with Existing Database. Geraadpleegd op 28 november 2019, van https://www.entityframeworktutorial.net/efcore/create-model-for-existing-database-in-ef-core.aspx
 
-https://www.youtube.com/watch?time_continue=3&v=ZX7_12fwQLU&feature=emb_logo
+Entityframeworktutorial. (z.d.-b). Install Entity Framework Core. Geraadpleegd op 28 november 2019, van https://www.entityframeworktutorial.net/efcore/install-entity-framework-core.aspx
 
-https://www.entityframeworktutorial.net/efcore/install-entity-framework-core.aspx
+Entityframeworktutorial. (z.d.-c). What is Entity Framework? Geraadpleegd op 28 november 2019, van https://www.entityframeworktutorial.net/what-is-entityframework.aspx
 
-https://www.entityframeworktutorial.net/efcore/create-model-for-existing-database-in-ef-core.aspx
+Programming with Mosh. (2017, 13 april). Entity Framework 6 Tutorial: Learn Entity Framework 6 from Scratch. Geraadpleegd op 28 november 2019, van https://www.youtube.com/watch?time_continue=3&v=ZX7_12fwQLU&feature=emb_logo
 
 ## Repository Pattern
-https://www.youtube.com/watch?time_continue=1&v=rtXpYpZdOzM&feature=emb_logo
+Bergman, P.-E. (2019, 7 mei). Repository Design Pattern. Geraadpleegd op 28 november 2019, van https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30
 
-https://www.infragistics.com/community/blogs/b/dhananjay_kumar/posts/how-to-implement-the-repository-pattern-in-asp-net-mvc-application
+Galbraith, K. (2018, 6 maart). Getting Familiar With The Awesome Repository Pattern. Geraadpleegd op 28 november 2019, van https://dev.to/kylegalbraith/getting-familiar-with-the-awesome-repository-pattern--1ao3
 
-https://dev.to/kylegalbraith/getting-familiar-with-the-awesome-repository-pattern--1ao3
-
-https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30
+Programming with Mosh. (2015, 15 oktober). Repository Pattern with C# and Entity Framework, Done Right | Mosh. Geraadpleegd op 28 november 2019, van https://www.youtube.com/watch?time_continue=1&v=rtXpYpZdOzM&feature=emb_logo
 
 ## Sensitive Data Exposure
-https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure
+Editor in Chief. (2017, 14 januari). 8 Pros and Cons of Asymmetric Encryption. Geraadpleegd op 28 november 2019, van https://greengarageblog.org/8-pros-and-cons-of-asymmetric-encryption
 
-https://us.norton.com/internetsecurity-wifi-what-is-a-man-in-the-middle-attack.html
+Fox-IT. (z.d.). Penetration testing - Fox-IT. Geraadpleegd op 28 november 2019, van https://www.fox-it.com/nl/diensten/testing/penetration-testing/
 
-https://portswigger.net/web-security/sql-injection
+Microsoft. (2017, 30 maart). Generating Keys for Encryption and Decryption. Geraadpleegd op 28 november 2019, van https://docs.microsoft.com/en-us/dotnet/standard/security/generating-keys-for-encryption-and-decryption
 
-https://www.fox-it.com/nl/diensten/testing/penetration-testing/
+Norton. (z.d.). What is a man-in-the-middle attack? Geraadpleegd op 28 november 2019, van https://us.norton.com/internetsecurity-wifi-what-is-a-man-in-the-middle-attack.html
 
-https://allesovercrypto.nl/blog/hash-simpele-uitleg
+OWASP. (2018, 1 januari). Top 10-2017 A3-Sensitive Data Exposure - OWASP. Geraadpleegd op 28 november 2019, van https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure
 
-https://docs.microsoft.com/en-us/dotnet/standard/security/generating-keys-for-encryption-and-decryption
+Portswigger. (z.d.). What is SQL Injection? Tutorial & Examples. Geraadpleegd op 28 november 2019, van https://portswigger.net/web-security/sql-injection
 
-https://greengarageblog.org/8-pros-and-cons-of-asymmetric-encryption
+Suiker, P. (2018, 25 oktober). Wat is een Hash? - simpele uitleg. Geraadpleegd op 28 november 2019, van https://allesovercrypto.nl/blog/hash-simpele-uitleg
 
 
