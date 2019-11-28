@@ -67,4 +67,4 @@ Als afsluiting gaan wij deze Neighbourhoods ook weer verwijderen. Om een enkele 
 Ga nu terug naar de database en klik met de rechtermuisknop op de Neighbourhoods tabel en `Select Top 1000`, zoals je kan zien staan er nu nog maar 13 Neighbourhoods in.
 
 Als je wilt dat het process van de queries getoond wordt kan je via Console.WriteLine() de query resultaat variabelen erin zetten. </br>
-[image]
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/FindWrite.png">
