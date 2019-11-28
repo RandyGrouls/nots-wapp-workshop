@@ -336,7 +336,7 @@ Moderne cryptografieën zijn (nagenoegen) onmogelijk om te kraken, omdat het som
 ### Man-in-the-middle-aanval
 Man-in-the-middle-aanval is een aanval waarbij de communicatie tussen twee partijen onderschept worden, zonder dat zij ervan weten. Daarbij kunnen berichten gelezen en gewijzigd worden. Daarom is het van belang om een goede encryptie te gebruiken.  
 
-###SQL-injectie
+### SQL-injectie
 SQL-injectie is een aanval, waarbij in een gebruikersinput SQL-statements wordt ingevoerd, die onbewust in de database wordt gerund. Het is vooral populair om deze aanval bij inlogpagina’s uit te voeren.  
 Het gevaar van deze aanvallen is dat alle gevoelige persoonlijke gegevens toegankelijk zijn voor onbevoegden, terwijl die beschermd hadden moeten zijn, zoals gezondheidsdossiers, inloggegevens, persoonlijke gegevens en creditcards. De bescherming van deze gegevens staan gedefinieerd door wetten, zoals EU’s GDPR en landelijke privacywetten.
 
