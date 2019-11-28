@@ -26,52 +26,50 @@ public interface IRepository<TEntity> where TEntity : class //zorgt ervoor dat e
 Vervolgens, maak een `Repository` class aan. Zorg ervoor dat deze het zojuist aangemaakte interface implementeert. Vergeet niet om `where TEntity : class` toe te voegen. 
 
 ```c#
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+{
+    protected readonly DbContext context;
+
+    public Repository(DbContext context)
     {
-        protected readonly DbContext context;
-
-        public Repository(DbContext context)
-        {
-            this.context = context;
-        }
-
-        public TEntity Get(int id)
-        {
-            return context.Set<TEntity>().Find(id);
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            return context.Set<TEntity>().ToList();
-        }
-
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            return context.Set<TEntity>().Where(predicate);
-        }
-
-
-        public void Add(TEntity entity)
-        {
-            context.Set<TEntity>().Add(entity);
-        }
-
-        public void AddRange(IEnumerable<TEntity> entities)
-        {
-            context.Set<TEntity>().AddRange(entities);
-        }
-
-
-        public void Remove(TEntity entity)
-        {
-            context.Set<TEntity>().Remove(entity);
-        }
-
-        public void RemoveRange(IEnumerable<TEntity> entities)
-        {
-            context.Set<TEntity>().RemoveRange(entities);
-        }
+        this.context = context;
     }
+
+    public TEntity Get(int id)
+    {
+        return context.Set<TEntity>().Find(id);
+    }
+
+    public IEnumerable<TEntity> GetAll()
+    {
+        return context.Set<TEntity>().ToList();
+    }
+
+    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+    {
+        return context.Set<TEntity>().Where(predicate);
+    }
+
+    public void Add(TEntity entity)
+    {
+        context.Set<TEntity>().Add(entity);
+    }
+
+    public void AddRange(IEnumerable<TEntity> entities)
+    {
+        context.Set<TEntity>().AddRange(entities);
+    }
+
+    public void Remove(TEntity entity)
+    {
+        context.Set<TEntity>().Remove(entity);
+    }
+
+    public void RemoveRange(IEnumerable<TEntity> entities)
+    {
+        context.Set<TEntity>().RemoveRange(entities);
+    }
+}
 ```
 Het mooie aan bovenstaande classes is dat deze generic zijn. Hierdoor kunnen ze in elke applicatie hergebruikt worden.
 
@@ -160,7 +158,7 @@ public class UnitOfWork : IUnitOfWork
     }
 }
 ```
-Nu is het dus mogelijk om meerdere CRUD operaties uit te voeren op verschillende repositories en vervolgens de `Complete` methode te gebruiken om deze wijzigingen op te slaan.
+Nu is het dus mogelijk om meerdere CRUD operaties uit te voeren op verschillende repositories en vervolgens de `Complete` methode te gebruiken om deze wijzigingen op te slaan. Onderstaand een voorbeeld hoe je dit kan toepassen op de `Neighbourhoods` repository. Plaats deze code in de Main methode van
 
 ```c#
 using (UnitOfWork unitOfWork = new UnitOfWork(new DBFirstDemoContext()))
