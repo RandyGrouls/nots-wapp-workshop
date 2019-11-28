@@ -171,4 +171,13 @@ using (UnitOfWork unitOfWork = new UnitOfWork(new DBFirstDemoContext()))
     unitOfWork.Neighbourhoods.Add(newNeighbourhood); //Neighbourhood toevoegen
 
     unitOfWork.Complete(); //Wijzigingen opslaan
+
+    //Print alle neighbourhoods
+    foreach (var neighbourhood in unitOfWork.Neighbourhoods.GetAll())
+    {
+        Console.WriteLine(neighbourhood.Neighbourhood);
+    }
 }
+```
+
+Probeer het programma uit te breiden met extra interfaces en classes voor de entities `Listings` en `Reviews`. Vergeet niet om `IUnitOfWork` en `UnitOfWork` aan te passen. Test of je deze ook weer kunt gebruiken in de `Main` methode. 
