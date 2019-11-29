@@ -152,7 +152,7 @@ Vervolgens worden hier SELECT, INSERT en DELETE operaties in aangemaakt zoals hi
 
 Wanneer deze applicatie is aangemaakt moeten er een aantal classes en interfaces aangemaakt worden. In onderstaand voorbeeld worden deze in de map "Repositories" geplaatst.
 
-<img src="./afbeeldingen/repository-classes.png" alt="Repository files" width="300px"><br/>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/Repository-classes.PNG" alt="Repository files" width="300px"><br/>
 <em>Figuur 9: Overzicht Repository bestanden</em>
 
 Maak eerst een nieuwe interface aan met de naam `IRepository`. Deze krijgt vervolgens onderstaande methoden:
