@@ -4,7 +4,7 @@ In deze workshop gaan wij het Entity Framework implementeren samen met een datab
 
 ## Database Setup
 
-Begin met het openen van `Microsoft SQL Server Management Studio` en log in via `SQL Server Authentication`en importeer `DBFirstDemo.bacpac`.
+Begin met het openen van `Microsoft SQL Server Management Studio` en log in via `SQL Server Authentication` en importeer `DBFirstDemo.bacpac`.
 
 Zoals je kan zien staat in deze database 3 tabellen, een genaamd `listings`, een genaamd `neighbourhoods` en een genaamd `reviews`. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/db-example.png">
@@ -16,8 +16,10 @@ We gaan nu bekijken hoeveel Neighourhoods wij hebben. Klik met de rechtermuiskno
 Om te beginnen open `Visual Studio Preview`, kies dan `Create a new project`. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewProject.png">
 
-Maak dan een `C# .NET Core Console app` aan en noem de app EntityWorkshop. </br>
-<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateConsoleApp.png">
+Maak dan een `ASP.NET Core Web Application` aan en noem de app EntityWorkshop. Kies `Web Application (Model-View-Controller)` als template.</br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateASPCoreApp.PNG">
+
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateMVCApp.PNG">
 
 Ga naar `Tools > NuGet Package Manager > Manage NuGet Packages for Solution` en ga naar `Browse` en type in de searchbar `microsoft.entityframeworkcore` en zorg ervoor dat `Include prerelease` aangevinkt is.
 
@@ -28,23 +30,42 @@ Herhaal vervolgens dit process met `microsoft.entityframeworkcore.tools` en `mic
 
 ## Project Packages
 
-Ga naar `Tools > NuGet Package Manager > Package Manager Console`, voer hier vervolgens `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;` vervang `[SERVER_NAME]` met de naam van jouw database servernaam, in dit geval waarschijnlijk `localhost`.
-Plak hierna het volgende achter het eerste commando: `Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME]` hierbij verplaats je `[DIRECTORY_NAME]` met een naam naar keuze, wij gebruiken in ons geval de root directory en laten `-OutputDir [DIRECTORY_NAME]` weg uit het commando. </br>
+Ga naar `Tools > NuGet Package Manager > Package Manager Console`, voer hier vervolgens `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;` vervang `[SERVER_NAME]` met de naam van jouw database servernaam, in dit geval waarschijnlijk de naam van jouw laptop.
+Plak hierna het volgende achter het eerste commando: `Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME]` hierbij kun je `[DIRECTORY_NAME]`vervangen met een naam naar keuze, in dit voorbeeld gebruiken wij gebruiken de `Models` directory. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ConsolePackages.png">
 
 Wanneer dit is uitgevoerd zijn er een aantal bestanden gegenereert voor ons, deze files zijn onze gemapte database tabellen.
 
 ## Praten met de database
-
-Om queries te kunnen schrijven naar de database moeten wij nog enkele stappen zetten, deze stappen bevinden zich binnen de `Context class`, in ons geval heet deze `DBFirstDemoContext.cs`.
+Om CRUD operaties uit te kunnen voeren op de database moeten er nog enkele stappen gezet worden, deze stappen bevinden zich binnen de `Context class`, in ons geval heet deze `DBFirstDemoContext.cs`.
 Open dit bestand, zoals je kan zien bevat dit bestand 3 `DBSet<TEntity>'s`. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/DBSet.png">
 
 Deze DBSet's zorgen ervoor dat onze maps entities worden en gedragen zich als een collectie, dit maakt het mogelijk om LINQ queries uit te voeren, wij gaan er ook een paar implementeren.
 
-Ga naar `Program.cs` en binnen de Main voer het volgende in:
+Ga naar `Startup.cs` en vervang de `ConfigureServices` methode:
 
-We beginnen eerst met het maken van een nieuwe context class instantie. </br>
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews();
+    //Registreer Context class als service
+    services.AddDbContext<DBFirstDemoContext>(); 
+}
+```
+Voeg een nieuwe Controller toe voor de `Neighbourhoods` model.
+
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/AddController.png">
+
+Kies `MVC Controller with views, using Entity Framework` en selecteer onderstaande waarden.
+
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateController.png">
+
+Ga naar `Startup.cs` en vervang de default controller `Home` door `Neighbourhoods`.
+
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ReplaceController.png">
+
+<!-- We beginnen eerst met het maken van een nieuwe context class instantie. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewContext.png">
 
 Hierna maken we een neighbourhood aan met de naam NewNeighbourhood en voegen deze toen via onze context class aan de Neigbourhoods map, hierna slaan wij de wijzigingen op. </br>
@@ -67,4 +88,4 @@ Als afsluiting gaan wij deze Neighbourhoods ook weer verwijderen. Om een enkele 
 Ga nu terug naar de database en klik met de rechtermuisknop op de Neighbourhoods tabel en `Select Top 1000`, zoals je kan zien staan er nu nog maar 13 Neighbourhoods in.
 
 Als je wilt dat het process van de queries getoond wordt kan je via Console.WriteLine() de query resultaat variabelen erin zetten. </br>
-<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/FindWrite.png">
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/FindWrite.png"> -->
