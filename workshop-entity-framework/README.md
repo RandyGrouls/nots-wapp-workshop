@@ -55,15 +55,15 @@ public void ConfigureServices(IServiceCollection services)
 ```
 Voeg een nieuwe Controller toe voor de `Neighbourhoods` model.
 
-<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/AddController.png">
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/AddController.png" width="700px">
 
 Kies `MVC Controller with views, using Entity Framework` en selecteer onderstaande waarden.
 
-<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateController.PNG">
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateController.PNG" width="550px">
 
 Ga naar `Startup.cs` en vervang de default controller `Home` door `Neighbourhoods`.
 
-<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ReplaceController.PNG">
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ReplaceController.PNG" width="700px">
 
 <!-- We beginnen eerst met het maken van een nieuwe context class instantie. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewContext.png">
