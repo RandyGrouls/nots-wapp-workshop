@@ -59,11 +59,11 @@ Voeg een nieuwe Controller toe voor de `Neighbourhoods` model.
 
 Kies `MVC Controller with views, using Entity Framework` en selecteer onderstaande waarden.
 
-<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateController.png">
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateController.PNG">
 
 Ga naar `Startup.cs` en vervang de default controller `Home` door `Neighbourhoods`.
 
-<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ReplaceController.png">
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ReplaceController.PNG">
 
 <!-- We beginnen eerst met het maken van een nieuwe context class instantie. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewContext.png">
