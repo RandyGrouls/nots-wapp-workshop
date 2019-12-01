@@ -147,10 +147,7 @@ Om de wijzigingen aan deze collectie op te slaan in een database, wordt gebruik 
 ## Hoe implementeer je het Repository Pattern?
 Om het Repository pattern te implementeren begin je met het aanmaken van een Entity framework applicatie zoals beschreven in het [Entity framework hoofdstuk](hoe-implementeer-je-het-entity-framework).
 
-<!-- Wanneer deze applicatie is aangemaakt moet er een Repository aangemaakt worden, dit wordt gedaan door een map genaamd Repositories aan te maken en daarin een generic interface in te zetten waarbij T verwijst naar een entity.
-Vervolgens worden hier SELECT, INSERT en DELETE operaties in aangemaakt zoals hieronder staat afgebeeld. De UPDATE en SAVE moeten buiten de repository aangemaakt worden. -->
-
-Wanneer deze applicatie is aangemaakt moeten er een aantal classes en interfaces aangemaakt worden. In onderstaand voorbeeld worden deze in de map "Repositories" geplaatst.
+Wanneer deze applicatie is aangemaakt moeten er een aantal classes en interfaces aangemaakt worden. In onderstaand voorbeeld worden deze in de `DAL` directory geplaatst.
 
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/Repository-classes.PNG" alt="Repository files" width="300px"><br/>
 <em>Figuur 9: Overzicht Repository bestanden</em>
@@ -174,59 +171,57 @@ public interface IRepository<TEntity> where TEntity : class //zorgt ervoor dat e
 Vervolgens, maak een `Repository` class aan. Zorg ervoor dat deze het zojuist aangemaakte interface implementeert. Vergeet niet om `where TEntity : class` toe te voegen. 
 
 ```c#
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+{
+    protected readonly DbContext context;
+
+    public Repository(DbContext context)
     {
-        protected readonly DbContext context;
-
-        public Repository(DbContext context)
-        {
-            this.context = context;
-        }
-
-        public TEntity Get(int id)
-        {
-            return context.Set<TEntity>().Find(id);
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            return context.Set<TEntity>().ToList();
-        }
-
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            return context.Set<TEntity>().Where(predicate);
-        }
-
-
-        public void Add(TEntity entity)
-        {
-            context.Set<TEntity>().Add(entity);
-        }
-
-        public void AddRange(IEnumerable<TEntity> entities)
-        {
-            context.Set<TEntity>().AddRange(entities);
-        }
-
-
-        public void Remove(TEntity entity)
-        {
-            context.Set<TEntity>().Remove(entity);
-        }
-
-        public void RemoveRange(IEnumerable<TEntity> entities)
-        {
-            context.Set<TEntity>().RemoveRange(entities);
-        }
+        this.context = context;
     }
+
+    public TEntity Get(int id)
+    {
+        return context.Set<TEntity>().Find(id);
+    }
+
+    public IEnumerable<TEntity> GetAll()
+    {
+        return context.Set<TEntity>().ToList();
+    }
+
+    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+    {
+        return context.Set<TEntity>().Where(predicate);
+    }
+
+    public void Add(TEntity entity)
+    {
+        context.Set<TEntity>().Add(entity);
+    }
+
+    public void AddRange(IEnumerable<TEntity> entities)
+    {
+        context.Set<TEntity>().AddRange(entities);
+    }
+
+    public void Remove(TEntity entity)
+    {
+        context.Set<TEntity>().Remove(entity);
+    }
+
+    public void RemoveRange(IEnumerable<TEntity> entities)
+    {
+        context.Set<TEntity>().RemoveRange(entities);
+    }
+}
 ```
-Het mooie aan bovenstaande classes is dat deze generic zijn. Hierdoor kunnen ze in elke applicatie hergebruikt worden.
+Omdat bovenstaande classes generic zijn. Kunnen ze in elke applicatie hergebruikt worden.
 
 De volgende stap is om een repository interface te maken voor elke `DBSet`. Dit interface extend het `IRepository` interface met een concrete entity en zal methoden bevatten die gebruikt worden om queries te encapsulaten. Onderstaand voorbeeld is voor de `Neighbourhoods` table.
 
 ```c#
-public interface INeighbourhoodRepository : IRepository<Neighbourhoods>
+public interface INeighbourhoodsRepository : IRepository<Neighbourhoods>
 {
     IEnumerable<Neighbourhoods> GetNeighbourhoodsContainingString(string indexString); //Extra methode om neighbourhoods te filteren
 }
@@ -234,14 +229,14 @@ public interface INeighbourhoodRepository : IRepository<Neighbourhoods>
 Om vervolgens alle classes en interfaces aan elkaar te koppelen moet er een class gemaakt worden dat bovenstaand interface implementeert en de `Repository` class extend.
 
 ```c#
-public class NeighbourhoodRepository : Repository<Neighbourhoods>, INeighbourhoodRepository
+public class NeighbourhoodsRepository : Repository<Neighbourhoods>, INeighbourhoodsRepository
 {
     public DBFirstDemoContext DemoContext
     {
         get { return context as DBFirstDemoContext; }
     }
 
-    public NeighbourhoodRepository(DBFirstDemoContext context) : base(context)
+    public NeighbourhoodsRepository(DBFirstDemoContext context) : base(context)
     {
     }
 
@@ -251,32 +246,35 @@ public class NeighbourhoodRepository : Repository<Neighbourhoods>, INeighbourhoo
     }
 }
 ```
-Het is mogelijk om deze classes nu zo te gebruiken:
+<!-- Ga naar `NeighbourhoodsController` en vervang deze code:
+
 ```c#
-//Neighbourhood aanmaken
-var newNeighbourhood = new Neighbourhoods()
+private readonly DBFirstDemoContext _context;
+
+public NeighbourhoodsController(DBFirstDemoContext context)
 {
-    Neighbourhood = "NewNeighbourhood"
-};
-
-//Repository aanmaken
-var neighBourHoodRespository = new NeighbourhoodRepository(new DBFirstDemoContext());
-
-neighBourHoodRespository.DemoContext.Neighbourhoods.Add(newNeighbourhood); //Neighbourhood toevoegen
-
-//Wijzigingen opslaan
-neighBourHoodRespository.DemoContext.SaveChanges();
+    _context = context;
+}
 ```
-Dit is echter ongewenst. Dan zou je dus overal waar je dit repository nodig hebt, steeds een nieuwe instantie aan moeten maken.
+Door deze code:
 
-Een oplossing hiervoor is het Unit of Work pattern. Hier is een interface en een class voor nodig. Deze zijn verschillend per applicatie omdat er gebruik wordt gemaakt van alle Repository interfaces zoals bijvoorbeeld `INeighbourhoodRepository`.
+```c#
+private readonly INeighbourhoodsRepository _context;
 
-Maak eerst een `IUnitOfWork` interface aan zoals onderstaand voorbeeld:
+public NeighbourhoodsController(DBFirstDemoContext context)
+{
+    _context = new NeighbourhoodsRepository(context);
+}
+```
+Alle foutmeldingen in `NeighbourhoodsController` worden in de volgende stappen opgelost. -->
+
+### Unit of Work Pattern
+Alle nieuwe interfaces en classes worden weer in de `DAL` folder geplaatst. Maak eerst een `IUnitOfWork` interface aan zoals onderstaand voorbeeld:
 
 ```c#
 public interface IUnitOfWork : IDisposable
 {
-    INeighbourhoodRepository Neighbourhoods { get; }
+    INeighbourhoodsRepository Neighbourhoods { get; }
     int Complete();
 }
 ```
@@ -286,13 +284,13 @@ Maak daarna een `UnitOfWork` class die dit interface implementeert:
 public class UnitOfWork : IUnitOfWork
 {
     private readonly DBFirstDemoContext context;
-    public INeighbourhoodRepository Neighbourhoods { get; private set; }
+    public INeighbourhoodsRepository Neighbourhoods { get; private set; }
     //Voeg hier extra repositories toe
 
     public UnitOfWork(DBFirstDemoContext context)
     {
         this.context = context;
-        Neighbourhoods = new NeighbourhoodRepository(context);
+        Neighbourhoods = new NeighbourhoodsRepository(context);
     }
 
     public int Complete()
@@ -306,21 +304,158 @@ public class UnitOfWork : IUnitOfWork
     }
 }
 ```
-Nu is het dus mogelijk om meerdere CRUD operaties uit te voeren op verschillende repositories en vervolgens de `Complete` methode te gebruiken om deze wijzigingen op te slaan.
+Nu is het dus mogelijk om CRUD operaties uit te voeren op verschillende repositories en vervolgens de `Complete` methode te gebruiken om deze wijzigingen op te slaan.
+
+Nu moet de `NeighbourhoodsController` aangepast worden om het Unit of Work Pattern te gebruiken.
 
 ```c#
-using (UnitOfWork unitOfWork = new UnitOfWork(new DBFirstDemoContext()))
-{
-    //Neighbourhood aanmaken
-    var newNeighbourhood = new Neighbourhoods()
+    public class NeighbourhoodsController : Controller
     {
-        Neighbourhood = "NewNeighbourhood"
-    };
-    unitOfWork.Neighbourhoods.Add(newNeighbourhood); //Neighbourhood toevoegen
+        private UnitOfWork unitOfWork;
 
-    unitOfWork.Complete(); //Wijzigingen opslaan
-}
+        public NeighbourhoodsController(DBFirstDemoContext context)
+        {
+            unitOfWork = new UnitOfWork(context);
+        }
+
+        // GET: Neighbourhoods
+        public IActionResult Index()
+        {
+            return View(unitOfWork.Neighbourhoods.GetAll());
+        }
+
+        // GET: Neighbourhoods/Details/5
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var neighbourhoods = unitOfWork.Neighbourhoods.Get((int)id);
+
+            if (neighbourhoods == null)
+            {
+                return NotFound();
+            }
+
+            return View(neighbourhoods);
+        }
+
+        // GET: Neighbourhoods/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Neighbourhoods/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind("NeighbourhoodGroup,Neighbourhood,NeighbourhoodId")] Neighbourhoods neighbourhoods)
+        {
+            if (ModelState.IsValid)
+            {
+                unitOfWork.Neighbourhoods.Add(neighbourhoods);
+                unitOfWork.Complete();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(neighbourhoods);
+        }
+
+        // GET: Neighbourhoods/Edit/5
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var neighbourhoods = unitOfWork.Neighbourhoods.Get((int)id);
+
+            if (neighbourhoods == null)
+            {
+                return NotFound();
+            }
+
+            return View(neighbourhoods);
+        }
+
+        // POST: Neighbourhoods/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind("NeighbourhoodGroup,Neighbourhood,NeighbourhoodId")] Neighbourhoods neighbourhoods)
+        {
+            if (id != neighbourhoods.NeighbourhoodId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var found = unitOfWork.Neighbourhoods.Get(id);
+
+                    found.NeighbourhoodGroup = neighbourhoods.NeighbourhoodGroup;
+                    found.Neighbourhood = neighbourhoods.Neighbourhood;
+
+                    unitOfWork.Complete();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!NeighbourhoodsExists(neighbourhoods.NeighbourhoodId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(neighbourhoods);
+        }
+
+        // GET: Neighbourhoods/Delete/5
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var neighbourhoods = unitOfWork.Neighbourhoods.Get((int)id);
+            if (neighbourhoods == null)
+            {
+                return NotFound();
+            }
+
+            return View(neighbourhoods);
+        }
+
+        // POST: Neighbourhoods/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var neighbourhoods = unitOfWork.Neighbourhoods.Get(id);
+            unitOfWork.Neighbourhoods.Remove(neighbourhoods);
+            unitOfWork.Complete();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool NeighbourhoodsExists(int id)
+        {
+            return unitOfWork.Neighbourhoods.Get(id) != null;
+        }
+    }
 ```
+Het programma kan nu uitgebreid worden met extra controllers, interfaces en classes voor alle andere entities waar nodig.
 # Sensitive Data Exposure
 
 ## Wat is het?
