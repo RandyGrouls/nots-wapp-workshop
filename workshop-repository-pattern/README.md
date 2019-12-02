@@ -5,7 +5,6 @@ In deze workshop ga je de applicatie van de voorgaande workshop uitbreiden met h
 Er moeten een aantal classes en interfaces aangemaakt worden. In onderstaand voorbeeld worden deze in de `DAL` directory geplaatst.
 
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/Repository-classes.PNG" alt="Repository files" width="300px"><br/>
-<em>Figuur 9: Overzicht Repository bestanden</em>
 
 Maak eerst een nieuwe interface aan met de naam `IRepository`. Deze krijgt vervolgens onderstaande methoden:
 
