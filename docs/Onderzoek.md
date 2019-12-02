@@ -84,9 +84,9 @@ zoek in de search bar naar `microsoft.entityframeworkcore` en selecteer het eers
 <img src="./afbeeldingen/install-entity-framework.png" alt="install packages" width="500px"><br/>
 <em>Figuur 6: Installeren packages</em>
 
-Wanneer deze zijn geïnstalleerd ga dan naar `Tools > NuGet Package Manager > Package Manager Console`. In deze console wordt het volgende ingevoerd: `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME].` [SERVER_NAME] moet vervangen worden met de servernaam van de SQL Server, de [DIRECTORY_NAME] kan gewijzigd worden naar een map naar keuze.
+Wanneer deze zijn geïnstalleerd ga dan naar `Tools > NuGet Package Manager > Package Manager Console`. In deze console wordt het volgende ingevoerd: `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME].` [SERVER_NAME] moet vervangen worden met de servernaam van de SQL Server, de [DIRECTORY_NAME] kan gewijzigd worden naar een directory naar keuze. Deze connection string zal enkele modellen genereren dus het is aanraadbaar om deze ook in een Models directory te zetten. 
 
-Als dit command klaar is met uitvoeren, zijn er nieuwe bestanden aangemaakt voor de entities en context class. Er wordt voor elke tabel een entity aangemaakt. In dit voorbeeld is gekozen voor de Root directory van het project hiervoor is `-OutputDir [DIRECTORY_NAME]` weggelaten. Deze ziet er hierna zo uit:
+Als dit command klaar is met uitvoeren, zijn er nieuwe bestanden aangemaakt voor de entities en context class. Er wordt voor elke tabel een entity aangemaakt. In dit voorbeeld is gekozen voor de Models directory van het project. Na het uitvoeren van deze connectionstring ziet het project er zo uit:
 
 <img src="./afbeeldingen/scaffolded-models.png" alt="install packages" width="300px"><br/>
 <em>Figuur 7: Overzicht gegenereerde bestanden</em>
