@@ -107,12 +107,15 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 Om CRUD operatie uit te voeren maken wij eerst een Controller class aan, in dit geval maken wij er een aan voor het model 'Neighbourhoods'. </br>
-[IMAGE]
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/AddController.png" width="700px">
 
 Kies MVC Controller with views, using Entity Framework en selecteer onderstaande waarden. </br>
-[IMAGE]
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateController.PNG" width="550px">
 
 Bekijk het gegenereerde controller bestand, zoals je kan zien zijn hier meerdere CRUD operaties gegenereert, deze kunnen als basis gebruikt worden voor het maken van nieuwe CRUD operaties.
+
+Zorg ervoor dat in de `Startup.cs` de goede controller op default staat. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ReplaceController.PNG" width="700px">
 
 # Repository Pattern
 ## Wat is het Repository Pattern?
