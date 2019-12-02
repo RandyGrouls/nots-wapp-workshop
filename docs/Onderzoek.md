@@ -246,27 +246,7 @@ public class NeighbourhoodsRepository : Repository<Neighbourhoods>, INeighbourho
     }
 }
 ```
-<!-- Ga naar `NeighbourhoodsController` en vervang deze code:
-
-```c#
-private readonly DBFirstDemoContext _context;
-
-public NeighbourhoodsController(DBFirstDemoContext context)
-{
-    _context = context;
-}
-```
-Door deze code:
-
-```c#
-private readonly INeighbourhoodsRepository _context;
-
-public NeighbourhoodsController(DBFirstDemoContext context)
-{
-    _context = new NeighbourhoodsRepository(context);
-}
-```
-Alle foutmeldingen in `NeighbourhoodsController` worden in de volgende stappen opgelost. -->
+Het is mogelijk om hier te stoppen met de implementatie en alleen gebruik te maken van het Repository Pattern. Echter kan het Unit of Work Pattern ook nog geïmplementeerd worden. Het voordeel van dit pattern is dat er meerdere CRUD operaties kunnen worden uitgevoerd in één keer. Dit heeft als gevolg dat óf alle operaties slagen óf alle operaties falen. Dit voorkomt data inconsistentie.  
 
 ### Unit of Work Pattern
 Alle nieuwe interfaces en classes worden weer in de `DAL` folder geplaatst. Maak eerst een `IUnitOfWork` interface aan zoals onderstaand voorbeeld:
