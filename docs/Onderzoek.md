@@ -84,43 +84,39 @@ zoek in de search bar naar `microsoft.entityframeworkcore` en selecteer het eers
 <img src="./afbeeldingen/install-entity-framework.png" alt="install packages" width="500px"><br/>
 <em>Figuur 6: Installeren packages</em>
 
-Wanneer deze zijn geïnstalleerd ga dan naar `Tools > NuGet Package Manager > Package Manager Console`. In deze console wordt het volgende ingevoerd: `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME].` [SERVER_NAME] moet vervangen worden met de servernaam van de SQL Server, de [DIRECTORY_NAME] kan gewijzigd worden naar een map naar keuze.
+Wanneer deze zijn geïnstalleerd ga dan naar `Tools > NuGet Package Manager > Package Manager Console`. In deze console wordt het volgende ingevoerd: `Scaffold-DbContext "Server=[SERVER_NAME];Database=DBFirstDemo;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir [DIRECTORY_NAME].` [SERVER_NAME] moet vervangen worden met de servernaam van de SQL Server, de [DIRECTORY_NAME] kan gewijzigd worden naar een directory naar keuze. Deze connection string zal enkele modellen genereren dus het is aanraadbaar om deze ook in een Models directory te zetten. 
 
-Als dit command klaar is met uitvoeren, zijn er nieuwe bestanden aangemaakt voor de entities en context class. Er wordt voor elke tabel een entity aangemaakt. In dit voorbeeld is gekozen voor de Root directory van het project hiervoor is `-OutputDir [DIRECTORY_NAME]` weggelaten. Deze ziet er hierna zo uit:
+Als dit command klaar is met uitvoeren, zijn er nieuwe bestanden aangemaakt voor de entities en context class. Er wordt voor elke tabel een entity aangemaakt. In dit voorbeeld is gekozen voor de Models directory van het project. Na het uitvoeren van deze connectionstring ziet het project er zo uit:
 
 <img src="./afbeeldingen/scaffolded-models.png" alt="install packages" width="300px"><br/>
 <em>Figuur 7: Overzicht gegenereerde bestanden</em>
 
-Daarna kun je met de gemaakte `DBContext` class CRUD operaties uitvoeren op de database. Deze class zal een één of meerdere `DBSets` bevatten afhankelijk van het aantal tabellen in de database. Omdat deze `DBSets` zich gedragen als een collectie, is het mogelijk om alle soorten LINQ queries te gebruiken om objecten te vinden.
+Nu dat deze models gegenereert zijn moeten wij een nieuwe instantie aanmaken van het context bestand, dit doen we door in de main van `Startup.cs` het volgende te zetten:
 
+Wanneer er gekozen is voor een Console applicatie.
 ```c#
-DBFirstDemoContext context = new DBFirstDemoContext(); //Instantie van context aanmaken
+DBFirstDemoContext context = new DBFirstDemoContext();
 ```
+
+Wanneer er gekozen is voor een Web applicatie staat het volgende in `Startup.cs`.
 ```c#
-//Neighbourhood aanmaken
-var newNeighbourhood = new Neighbourhoods()
+public void ConfigureServices(IServiceCollection services)
 {
-    Neighbourhood = "NewNeighbourhood"
-};
-context.Neighbourhoods.Add(newNeighbourhood); //Neighbourhood toevoegen
-context.SaveChanges(); //Wijzigingen opslaan
+    services.AddControllersWithViews();
+    services.AddDbContext<DBFirstDemoContext>(); 
+}
 ```
-```c#
-var foundNeighbourhood = context.Neighbourhoods.Find(newNeighbourhood.NeighbourhoodId); //Neighbourhood vinden met primary key
+Om CRUD operatie uit te voeren maken wij eerst een Controller class aan, in dit geval maken wij er een aan voor het model 'Neighbourhoods'. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/AddController.png" width="700px">
 
-var foundNeighbourhoods = context.Neighbourhoods.Where(n => n.Neighbourhood.ToLower().Contains("a")); //Alle Neighbourhoods vinden met de letter a
+Kies MVC Controller with views, using Entity Framework en selecteer onderstaande waarden. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/CreateController.PNG" width="550px">
 
-foundNeighbourhood.Neighbourhood = "UpdatedNeighbourhood"; //Properties aanpassen
+Bekijk het gegenereerde controller bestand, zoals je kan zien zijn hier meerdere CRUD operaties gegenereert, deze kunnen als basis gebruikt worden voor het maken van nieuwe CRUD operaties.
 
-context.SaveChanges(); //Wijzigingen opslaan
-```
-```c#
-context.Neighbourhoods.Remove(foundNeighbourhood); //Bestaande Neighbourhood verwijderen
+Zorg ervoor dat in de `Startup.cs` de goede controller op default staat. </br>
+<img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ReplaceController.PNG" width="700px">
 
-context.Neighbourhoods.RemoveRange(foundNeighbourhoods); //Meerdere Neighbourhoods verwijderen
-
-context.SaveChanges(); //Wijzigingen opslaan
-```
 # Repository Pattern
 ## Wat is het Repository Pattern?
 Het Repository Pattern is een veel gebruikt pattern om duplicatie van data access logica binnen een applicatie te voorkomen. Denk hierbij bijvoorbeeld aan het communiceren met een database. Het biedt een abstractie van gegevens zodat de applicatie kan werken met een interface dat de interface van een collection van entities benadert. 
