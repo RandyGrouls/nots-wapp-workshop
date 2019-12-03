@@ -9,8 +9,6 @@ Begin met het openen van `Microsoft SQL Server Management Studio` en log in via 
 Zoals je kan zien staat in deze database 3 tabellen, een genaamd `listings`, een genaamd `neighbourhoods` en een genaamd `reviews`. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/db-example.png">
 
-We gaan nu bekijken hoeveel Neighourhoods wij hebben. Klik met de rechtermuisknop op de Neighbourhoods tabel en `Select Top 1000`, zoals je kan zien staan hier 22 Neighbourhoods in.
-
 ## Project Setup
 
 Om te beginnen open `Visual Studio Preview`, kies dan `Create a new project`. </br>
@@ -37,7 +35,7 @@ Plak hierna het volgende achter het eerste commando: `Trusted_Connection=True;" 
 Wanneer dit is uitgevoerd zijn er een aantal bestanden gegenereert voor ons, deze files zijn onze gemapte database tabellen.
 
 ## Praten met de database
-Om CRUD operaties uit te kunnen voeren op de database moeten er nog enkele stappen gezet worden, deze stappen bevinden zich binnen de `Context class`, in ons geval heet deze `DBFirstDemoContext.cs`.
+Om CRUD operaties uit te kunnen voeren op de database moeten er nog enkele stappen gezet worden, maar eerst bekijken wij `DBFirstDemoContext.cs`.
 Open dit bestand, zoals je kan zien bevat dit bestand 3 `DBSet<TEntity>'s`. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/DBSet.png">
 
@@ -64,6 +62,8 @@ Kies `MVC Controller with views, using Entity Framework` en selecteer onderstaan
 Ga naar `Startup.cs` en vervang de default controller `Home` door `Neighbourhoods`.
 
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/ReplaceController.PNG" width="700px">
+
+Hierna kunnen wij de gegenereerde controller bekijken, open `NeighbourhoodsController.cs`. Zoals je kan zien staan hier enkele CRUD operaties die al gegenereert zijn voor het project. In deze controller class kan je de CRUD operaties zetten voor het bijbehorende model. De gegenereerde queries kunnen als basis gebruikt worden voor eventuele andere queries.
 
 <!-- We beginnen eerst met het maken van een nieuwe context class instantie. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewContext.png">
