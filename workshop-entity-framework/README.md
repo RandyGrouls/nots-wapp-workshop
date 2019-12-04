@@ -66,8 +66,15 @@ Ga naar `Startup.cs` en vervang de default controller `Home` door `Neighbourhood
 Hierna kunnen wij de gegenereerde controller bekijken, open `NeighbourhoodsController.cs`. Zoals je kan zien staan hier enkele CRUD operaties die al gegenereert zijn voor het project. In deze controller class kan je de CRUD operaties zetten voor het bijbehorende model. De gegenereerde queries kunnen als basis gebruikt worden voor eventuele andere queries.
 
 Als extra gaan wij alvast de connectionstring verplaatsen om sensitive data exposure te voorkomen
-Ga naar `Startup.cs` en verander `services.AddDbContext<DBFirstDemoContext>()` naar `            services.AddDbContext<DBFirstDemoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBFirstDemo")));
-`, dit zorgt ervoor dat de context de connectionstring uit de `appsettings.json` haalt.
+Ga naar `Startup.cs` en verander
+ ```c#
+services.AddDbContext<DBFirstDemoContext>()
+``` 
+naar 
+```c# 
+services.AddDbContext<DBFirstDemoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBFirstDemo")));
+```
+Dit zorgt ervoor dat de context de connectionstring uit de `appsettings.json` haalt.
 
 Ga naar `appsettings.json` en voer het volgende onder "Allowedhosts" in: 
 ```c#
