@@ -65,6 +65,33 @@ Ga naar `Startup.cs` en vervang de default controller `Home` door `Neighbourhood
 
 Hierna kunnen wij de gegenereerde controller bekijken, open `NeighbourhoodsController.cs`. Zoals je kan zien staan hier enkele CRUD operaties die al gegenereert zijn voor het project. In deze controller class kan je de CRUD operaties zetten voor het bijbehorende model. De gegenereerde queries kunnen als basis gebruikt worden voor eventuele andere queries.
 
+Als extra gaan wij alvast de connectionstring verplaatsen om sensitive data exposure te voorkomen
+Ga naar `Startup.cs` en verander `services.AddDbContext<DBFirstDemoContext>()` naar `            services.AddDbContext<DBFirstDemoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBFirstDemo")));
+`, dit zorgt ervoor dat de context de connectionstring uit de `appsettings.json` haalt.
+
+Ga naar `appsettings.json` en voer het volgende onder "Allowedhosts" in: 
+```c#
+  "ConnectionStrings": {
+    "DBFirstDemo": "Server=JOUW_DATABASE_SERVERNAAM;Database=DBFirstDemo;Trusted_Connection=True;"
+  }
+```
+Nu kan de regel die wij hiervoor in de `Startup.cs` de connectionstring uit de `appsettings.json` halen.
+
+Als laatste stap moeten wij de oude connectionstring verwijderen, ga naar `DBFirstDemoContext.cs` en verwijder
+```c#
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=localhost;Database=DBFirstDemo; Trusted_Connection=True;");
+            }
+        }
+```
+
+Nu kan je de applicatie opstarten en je kan zien dat alle functionaliteiten nog werken indien alles goed is geïmplementeerd.
+
+
 <!-- We beginnen eerst met het maken van een nieuwe context class instantie. </br>
 <img src="https://github.com/RandyGrouls/nots-wapp-workshop/blob/master/docs/afbeeldingen/NewContext.png">
 
