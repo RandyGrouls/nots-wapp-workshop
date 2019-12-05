@@ -289,5 +289,3 @@ Nu moet de `NeighbourhoodsController` aangepast worden om het Unit of Work Patte
         }
     }
 ```
-
-Probeer het programma uit te breiden met extra controllers, interfaces en classes voor de entities `Listings` en `Reviews`. Vergeet niet om `IUnitOfWork` en `UnitOfWork` aan te passen.
